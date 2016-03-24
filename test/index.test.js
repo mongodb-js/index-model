@@ -75,6 +75,25 @@ describe('mongodb-index-model', function() {
           }
         });
     });
+
+    it('should serialize correctly', function() {
+      var serialized = indexes.serialize();
+      assert.ok(_.isArray(serialized));
+      var index = serialized[0];
+      assert.ok(index.ns);
+      assert.ok(index.key);
+      assert.ok(index.name);
+      assert.ok(index.version);
+      assert.ok(index.extra);
+      assert.ok('unique' in index);
+      assert.ok('sparse' in index);
+      assert.ok('ttl' in index);
+      assert.ok('hashed' in index);
+      assert.ok('geo' in index);
+      assert.ok('compound' in index);
+      assert.ok('partial' in index);
+      assert.ok('text' in index);
+    });
   });
 
   context('IndexField', function() {
