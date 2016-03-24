@@ -32,7 +32,7 @@ var indexes = new IndexModel(indexDefs, {parse: true});
 // get index by `<namespace>.<name>`
 indexes.get('mongodb.fanclub.last_login_-1').compound  // returns `false`
 
-// get index by name (use `name` ampersand index)
+// get index by `<name>` (use `name` ampersand index)
 indexes.get('_id_', 'name').unique // returns `true`
 ```
 
