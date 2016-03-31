@@ -25,7 +25,7 @@
   "dependencies": {
     "ampersand-model": "^6.0.2",
     "ampersand-rest-collection": "^5.0.0",
-    "async": "^2.0.0-rc.2",
+    "async": "^1.5.2",
     "lodash": "^4.6.1",
     "mongodb-ns": "^1.0.3"
   },
