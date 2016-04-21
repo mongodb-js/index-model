@@ -29,6 +29,7 @@
     "async": "^1.5.2",
     "lodash": "^4.8.2",
     "mongodb-ns": "^1.0.3",
+    "mongodb-read-preference": "^1.0.6",
     "triejs": "github:rueckstiess/triejs"
   },
   "devDependencies": {

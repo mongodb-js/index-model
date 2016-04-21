@@ -7,8 +7,8 @@ var _ = require('lodash');
 // var debug = require('debug')('mongodb-index-model:text:fetch');
 
 describe('fetch()', function() {
-  before(require('mongodb-runner/mocha/before')());
-  after(require('mongodb-runner/mocha/after')());
+  before(require('mongodb-runner/mocha/before')({ port: 27018 }));
+  after(require('mongodb-runner/mocha/after')({ port: 27018 }));
 
   context('local', function() {
     this.slow(2000);
@@ -19,7 +19,7 @@ describe('fetch()', function() {
 
     // connect and create collection with index
     before(function(done) {
-      MongoClient.connect('mongodb://localhost:27017/test', function(err, _db) {
+      MongoClient.connect('mongodb://localhost:27018/test', function(err, _db) {
         assert.ifError(err);
         db = _db;
         collection = db.collection('_test_index_fetch');
@@ -35,7 +35,7 @@ describe('fetch()', function() {
       collection.drop(done);
     });
 
-    it('should connect to `localhost:27017` and get indexes', function(done) {
+    it('should connect to `localhost:27018` and get indexes', function(done) {
       fetch(db, 'test._test_index_fetch', function(err, res) {
         assert.ifError(err);
         assert.equal(res[0].name, '_id_');
