@@ -17,6 +17,7 @@
     "fmt": "mongodb-js-fmt test/*.js bin/*.js index.js",
     "check": "mongodb-js-precommit",
     "ci": "npm run check && npm test",
+    "pretest": "mongodb-runner install",
     "test": "mocha"
   },
   "precommit": [
@@ -37,7 +38,7 @@
     "mocha": "^2.4.5",
     "mongodb-js-fmt": "^0.0.3",
     "mongodb-js-precommit": "^0.2.8",
-    "mongodb-runner": "^3.2.0",
+    "mongodb-runner": "^3.2.2",
     "pre-commit": "^1.1.2"
   }
 }
