@@ -113,22 +113,22 @@ describe('mongodb-index-model', function() {
 
   context('IndexField', function() {
     it('should accept numbers as index field values', function() {
-      assert.equal(indexes.get('seniors', 'name').fields.at(0).field, 'name');
-      assert.equal(indexes.get('seniors', 'name').fields.at(0).value, 1);
+      assert.equal(indexes.get('seniors', 'name').fields[0].field, 'name');
+      assert.equal(indexes.get('seniors', 'name').fields[0].value, 1);
     });
 
     it('should accept dotted field names', function() {
-      assert.equal(indexes.get('seniors', 'name').fields.at(1).field, 'address.city');
-      assert.equal(indexes.get('seniors', 'name').fields.at(1).value, 1);
+      assert.equal(indexes.get('seniors', 'name').fields[1].field, 'address.city');
+      assert.equal(indexes.get('seniors', 'name').fields[1].value, 1);
     });
 
     it('should accept selected strings as index field values', function() {
-      assert.equal(indexes.get('last_position_2dsphere', 'name').fields.at(0).value, '2dsphere');
+      assert.equal(indexes.get('last_position_2dsphere', 'name').fields[0].value, '2dsphere');
     });
 
     it('should correctly set the `geo` flag', function() {
-      assert.equal(indexes.get('seniors', 'name').fields.at(0).geo, false);
-      assert.equal(indexes.get('last_position_2dsphere', 'name').fields.at(0).geo, true);
+      assert.equal(indexes.get('seniors', 'name').fields[0].isGeo(), false);
+      assert.equal(indexes.get('last_position_2dsphere', 'name').fields[0].isGeo(), true);
     });
 
     it('should not allow arbitary strings as values', function() {
