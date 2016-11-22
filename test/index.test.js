@@ -1,14 +1,16 @@
-var assert = require('assert');
-var Index = require('../');
-var IndexCollection = require('../').Collection;
-var _ = require('lodash');
+const assert = require('assert');
+const Index = require('../');
+const _ = require('lodash');
 
-var INDEX_FIXTURE = require('./fixture');
+const INDEX_FIXTURE = require('./fixture');
 
 describe('mongodb-index-model', function() {
-  var indexes;
+  let indexes;
+
   before(function() {
-    indexes = new IndexCollection(INDEX_FIXTURE, {parse: true});
+    indexes = _.map(INDEX_FIXTURE, (index) => {
+      return new Index(index, { parse: true });
+    });
   });
 
   context('IndexModel', function() {
@@ -17,7 +19,7 @@ describe('mongodb-index-model', function() {
     });
 
     it('should get the names right', function() {
-      assert.deepEqual(indexes.pluck('name').sort(), [
+      assert.deepEqual(_.map(indexes, 'name').sort(), [
         '$**_text',
         '_id_',
         '_id_1_gender_-1',
@@ -30,19 +32,19 @@ describe('mongodb-index-model', function() {
     });
 
     it('should have the correct namespace', function() {
-      _.each(indexes.pluck('ns'), function(ns) {
+      _.each(_.map(indexes, 'ns'), function(ns) {
         assert.equal(ns, 'mongodb.fanclub');
       });
     });
 
     it('should have the correct version', function() {
-      _.each(indexes.pluck('version'), function(v) {
+      _.each(_.map(indexes, 'version'), function(v) {
         assert.equal(v, 1);
       });
     });
 
     it('should set all derived properties to false for regular indexes', function() {
-      var index = indexes.get('last_login_-1', 'name');
+      var index = _.find(indexes, { name: 'last_login_-1' });
       assert.equal(index.unique, false);
       assert.equal(index.sparse, false);
       assert.equal(index.ttl, false);
@@ -55,33 +57,33 @@ describe('mongodb-index-model', function() {
     });
 
     it('should recognize geo indexes', function() {
-      assert.equal(indexes.get('last_position_2dsphere', 'name').geo, true);
+      assert.equal(_.find(indexes, { name: 'last_position_2dsphere' }).geo, true);
     });
 
     it('should recognize compound indexes', function() {
-      assert.equal(indexes.get('email_1_favorite_features_1', 'name').compound, true);
+      assert.equal(_.find(indexes, { name: 'email_1_favorite_features_1' }).compound, true);
     });
 
     it('should return the correct `properties` array', function() {
-      var index = indexes.get('seniors', 'name');
+      var index = _.find(indexes, { name: 'seniors' });
       assert.deepEqual(index.properties, ['partial']);
-      index = indexes.get('last_login_-1', 'name');
+      index = _.find(indexes, { name: 'last_login_-1' });
       assert.deepEqual(index.properties, []);
-      index = indexes.get('_id_', 'name');
+      index = _.find(indexes, { name: '_id_' });
       assert.deepEqual(index.properties, ['unique']);
     });
 
     it('should recognize text indexes', function() {
-      assert.equal(indexes.get('$**_text', 'name').text, true);
+      assert.equal(_.find(indexes, { name: '$**_text' }).text, true);
     });
 
     it('should recognize unique indexes', function() {
-      assert.equal(indexes.get('_id_', 'name').unique, true);
+      assert.equal(_.find(indexes, { name: '_id_' }).unique, true);
     });
 
     it('should recognize partial indexes', function() {
-      assert.equal(indexes.get('seniors', 'name').partial, true);
-      assert.deepEqual(indexes.get('seniors', 'name').extra.partialFilterExpression,
+      assert.equal(_.find(indexes, { name: 'seniors' }).partial, true);
+      assert.deepEqual(_.find(indexes, { name: 'seniors' }).extra.partialFilterExpression,
         {
           'age': {
             '$gt': 50
@@ -90,7 +92,9 @@ describe('mongodb-index-model', function() {
     });
 
     it('should serialize correctly', function() {
-      var serialized = indexes.serialize();
+      var serialized = _.map(indexes, (model) => {
+        return model.serialize();
+      });
       assert.ok(_.isArray(serialized));
       var index = serialized[0];
       assert.ok(index.ns);
@@ -113,22 +117,22 @@ describe('mongodb-index-model', function() {
 
   context('IndexField', function() {
     it('should accept numbers as index field values', function() {
-      assert.equal(indexes.get('seniors', 'name').fields[0].field, 'name');
-      assert.equal(indexes.get('seniors', 'name').fields[0].value, 1);
+      assert.equal(_.find(indexes, { name: 'seniors' }).fields[0].field, 'name');
+      assert.equal(_.find(indexes, { name: 'seniors' }).fields[0].value, 1);
     });
 
     it('should accept dotted field names', function() {
-      assert.equal(indexes.get('seniors', 'name').fields[1].field, 'address.city');
-      assert.equal(indexes.get('seniors', 'name').fields[1].value, 1);
+      assert.equal(_.find(indexes, { name: 'seniors' }).fields[1].field, 'address.city');
+      assert.equal(_.find(indexes, { name: 'seniors' }).fields[1].value, 1);
     });
 
     it('should accept selected strings as index field values', function() {
-      assert.equal(indexes.get('last_position_2dsphere', 'name').fields[0].value, '2dsphere');
+      assert.equal(_.find(indexes, { name: 'last_position_2dsphere' }).fields[0].value, '2dsphere');
     });
 
     it('should correctly set the `geo` flag', function() {
-      assert.equal(indexes.get('seniors', 'name').fields[0].isGeo(), false);
-      assert.equal(indexes.get('last_position_2dsphere', 'name').fields[0].isGeo(), true);
+      assert.equal(_.find(indexes, { name: 'seniors' }).fields[0].isGeo(), false);
+      assert.equal(_.find(indexes, { name: 'last_position_2dsphere' }).fields[0].isGeo(), true);
     });
 
     it('should not allow arbitary strings as values', function() {
