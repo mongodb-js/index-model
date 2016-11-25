@@ -18,7 +18,7 @@
     "check": "mongodb-js-precommit",
     "ci": "npm run check && npm test",
     "pretest": "mongodb-runner install",
-    "test": "mocha",
+    "test": "mocha"
   },
   "precommit": [
     "check"
