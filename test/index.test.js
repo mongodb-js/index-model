@@ -1,14 +1,16 @@
 var assert = require('assert');
-var Index = require('../');
-var IndexCollection = require('../').Collection;
+var Index = require('../model');
+// var IndexCollection = require('../').Collection;
+var IndexModel = require('../lib/');
 var _ = require('lodash');
 
-var INDEX_FIXTURE = require('./fixture');
+// var INDEX_FIXTURE = require('./fixture');
 
 describe('mongodb-index-model', function() {
   var indexes;
   before(function() {
-    indexes = new IndexCollection(INDEX_FIXTURE, {parse: true});
+    // indexes = new IndexCollection(INDEX_FIXTURE, {parse: true});
+    indexes = new IndexModel(); // TODO ?????
   });
 
   context('IndexModel', function() {
