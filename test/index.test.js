@@ -1,5 +1,4 @@
 var assert = require('assert');
-var Index = require('../');
 var IndexCollection = require('../').Collection;
 var _ = require('lodash');
 
@@ -159,20 +158,6 @@ describe('mongodb-index-model', function() {
     it('should correctly set the `geo` flag', function() {
       assert.equal(indexes.get('seniors', 'name').fields.at(0).geo, false);
       assert.equal(indexes.get('last_position_2dsphere', 'name').fields.at(0).geo, true);
-    });
-
-    it('should not allow arbitary strings as values', function() {
-      assert.throws(function() {
-        /* eslint no-new: 0 */
-        new Index({
-          name: 'badIndex',
-          key: {
-            foo: 'someStrangeValue'
-          }
-        }, {
-          parse: true
-        });
-      });
     });
   });
 });
