@@ -1,9 +1,6 @@
 var assert = require('assert');
 var WarningsMixin = require('../lib/warnings').mixin;
-var Index = require('../');
 var IndexCollection = require('../').Collection;
-// var _ = require('lodash');
-//
 // var debug = require('debug')('mongodb-index-model:test:warnings');
 
 var INDEX_FIXTURE = require('./fixture');
@@ -131,20 +128,6 @@ describe('Index Warnings', function() {
   });
 
   context('IXWARN_KEY_PATTERN', function() {
-    it('should not allow arbitary strings as values', function() {
-      assert.throws(function() {
-        /* eslint no-new: 0 */
-        new Index({
-          name: 'badIndex',
-          key: {
-            foo: 'someStrangeValue'
-          }
-        }, {
-          parse: true
-        });
-      });
-    });
-
     it('warns boolean true is not valid in 3.4+', function() {
       bugsnagIndexes.updateIndexWarnings();
       var index = bugsnagIndexes.get('b_true', 'name');
