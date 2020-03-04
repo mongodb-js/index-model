@@ -27,7 +27,7 @@
     "mongodb": "^3.1.9",
     "mongodb-js-errors": "^0.4.0",
     "mongodb-ns": "^2.0.0",
-    "triejs": "github:rueckstiess/triejs"
+    "triejs": "@mongodb-js/triejs"
   },
   "devDependencies": {
     "debug": "^2.2.0",
